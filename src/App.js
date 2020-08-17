@@ -1,54 +1,84 @@
 import React, { Component } from 'react';
 import './App.css';
+import ResultComponent from './components/ResultComponent';
+import KeyPadComponent from "./components/KeyPadComponent";
 
 class App extends Component {
-  constructor(props){
-    super(props)
-    this.state={
-      count: 0,
+    constructor(){
+        super();
+
+        this.state = {
+            result: ""
+        }
+    }
+
+    onClick = button => {
+
+        if(button === "="){
+            this.calculate()
+        }
+
+        else if(button === "C"){
+            this.reset()
+        }
+        else if(button === "CE"){
+            this.backspace()
+        }
+
+        else {
+            this.setState({
+                result: this.state.result + button
+            })
+        }
     };
-  }
-  AdditemHandle(){
-    this.setState({
-      count: this.state.count + 1,
 
-    });
-  }
-  removeHandle(){
-    this.setState({
-      count: this.state.count - 1,
 
-    });
-  }
+    calculate = () => {
+        var checkResult = ''
+        if(this.state.result.includes('--')){
+            checkResult = this.state.result.replace('--','+')
+        }
 
-  resetHandle(){
-    this.setState({
-      count: 0,
+        else {
+            checkResult = this.state.result
+        }
 
-    });
-  }
-  render(){
-   return (
-    <div className="App"><h1>Counter App</h1>
-      <h2>{this.state.count}</h2> 
-      <button 
-        onClick={() => {
-        this.AdditemHandle();
-      }}
-      >Additem
-       `</button>
-       <button
-       onClick={() => {
-        this.removeHandle();
-      }}>Remove
-      </button>
-      <button
-       onClick={() => {
-        this.resetHandle();
-      }}> Reset </button>
-     </div>
-    );
-  }
+        try {
+            this.setState({
+                // eslint-disable-next-line
+                result: (eval(checkResult) || "" ) + ""
+            })
+        } catch (e) {
+            this.setState({
+                result: "error"
+            })
+
+        }
+    };
+
+    reset = () => {
+        this.setState({
+            result: ""
+        })
+    };
+
+    backspace = () => {
+        this.setState({
+            result: this.state.result.slice(0, -1)
+        })
+    };
+
+    render() {
+        return (
+            <div>
+                <div className="calculator-body">
+                    <h1>Simple Calculator</h1>
+                    <ResultComponent result={this.state.result}/>
+                    <KeyPadComponent onClick={this.onClick}/>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;

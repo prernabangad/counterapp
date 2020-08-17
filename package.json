@@ -1,6 +1,6 @@
 {
-  "homepage": "http://prernabangad.github.io/counterapp",
-  "name": "counter",
+  "homepage": "http://prernabangad.github.io/calculator",
+  "name": "calculator",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
